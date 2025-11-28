@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 export const Navbar = () => {
   const currentPath = usePathname();
-  const isActive = (href) => currentPath == href;
+  const isActive = (href: string) => currentPath == href;
   return (
     <div className="navbar bg-zinc-900/30 shadow-sm">
       <div className="navbar-start">
