@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark">
       <body className={`${ubuntu.variable} ${ubuntuMono.variable} antialiased`}>
         <div className="absolute top-0 inset-0 z-[-1] min-h-screen ">
           <LightRays
