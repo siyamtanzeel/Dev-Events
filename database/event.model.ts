@@ -40,7 +40,6 @@ const eventSchema = new Schema<IEvent>(
     },
     slug: {
       type: String,
-      unique: true,
       lowercase: true,
       trim: true,
     },
@@ -189,7 +188,7 @@ function normalizeTime(timeString: string): string {
  * Pre-save hook: Generates slug, normalizes date and time
  * Only regenerates slug if title has changed
  */
-eventSchema.pre("save", function (next) {
+eventSchema.pre("save", function (this: IEvent) {
   // Generate slug only if title is modified or slug doesn't exist
   if (this.isModified("title") || !this.slug) {
     this.slug = generateSlug(this.title);
@@ -204,8 +203,6 @@ eventSchema.pre("save", function (next) {
   if (this.isModified("time")) {
     this.time = normalizeTime(this.time);
   }
-
-  next();
 });
 
 // Create unique index on slug for faster lookups

@@ -22,7 +22,6 @@ const bookingSchema = new Schema<IBooking>(
       type: Schema.Types.ObjectId,
       required: [true, "Event ID is required"],
       ref: "Event",
-      index: true, // Index for faster queries on eventId
     },
     email: {
       type: String,
@@ -48,20 +47,11 @@ const bookingSchema = new Schema<IBooking>(
  * Pre-save hook: Validates that the referenced event exists
  * Throws an error if the eventId does not correspond to an existing Event
  */
-bookingSchema.pre("save", async function (next) {
-  try {
-    // Check if eventId exists in the Event collection
-    const event = await Event.findById(this.eventId);
-    if (!event) {
-      const error = new Error(
-        `Event with ID ${this.eventId} does not exist`
-      ) as Error & { statusCode?: number };
-      error.statusCode = 404;
-      return next(error);
-    }
-    next();
-  } catch (error) {
-    next(error);
+bookingSchema.pre("save", async function (this: IBooking) {
+  // Check if eventId exists in the Event collection
+  const event = await Event.findById(this.eventId);
+  if (!event) {
+    throw new Error(`Event with ID ${this.eventId} does not exist`);
   }
 });
 
