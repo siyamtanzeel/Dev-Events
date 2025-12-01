@@ -2,8 +2,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import posthog from "posthog-js";
 
 export const Navbar = () => {
+  posthog.capture("my event", { property: "value" });
   const currentPath = usePathname();
   const isActive = (href: string) => currentPath == href;
   return (
